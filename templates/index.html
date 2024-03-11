@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Alphabet Detector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Center content */
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        label:hover {
+            background-color: #0056b3;
+        }
+
+        #preview {
+            margin-top: 20px;
+        }
+
+        #preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 20px; /* Add margin to separate from predicted image */
+            z-index: 10;
+        }
+
+        #predicted-letter {
+            margin-top: 20px;
+        }
+
+        #submitBtn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #submitBtn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Language Alphabet Detector</h1>
+        <form id="uploadForm" action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" id="fileInput" name="file" accept="image/*">
+            <label for="fileInput">Choose Image</label>
+            <input type="submit" id="submitBtn" value="Submit">
+        </form>
+        <div id="preview"></div>
+        {% if prediction %}
+        <h2 id="predicted-letter">Predicted Letter: {{ predicted_letter }}</h2>
+        <img id = "predicted-image" src="data:image/jpeg;base64,{{ prediction }}" alt="Predicted Image">
+        {% endif %}
+    </div>
+
+    <script>
+        var predictedImageElement = document.getElementById('predicted-image');
+    
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var preview = document.getElementById('preview');
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                preview.innerHTML = '';
+                preview.appendChild(img);
+    
+                // Remove old prediction
+                var oldPrediction = document.getElementById('predicted-letter');
+                oldPrediction.innerHTML = '';
+    
+                // Remove old predicted image
+                if (predictedImageElement) {
+                    predictedImageElement.remove();
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>
