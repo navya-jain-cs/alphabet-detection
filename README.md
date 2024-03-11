@@ -7,7 +7,7 @@ This project aims to detect and recognize sign language alphabets using computer
 # Setup Instructions
 1. Clone the repository
 
-Bash : git clone https://github.com/your_username/sign-language-detection.git
+Bash : git clone https://github.com/navya-jain-cs/alphabet-detection
 
 2. Navigate to the project directory:
 
